@@ -12,5 +12,5 @@ fi
 cd ${DIR}/..
 pwd
 
-npm install
-PORT=${BACKEND_DEV_PORT} npm run dev
+yarn install
+PORT=${BACKEND_DEV_PORT} yarn dev

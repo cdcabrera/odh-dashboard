@@ -76,7 +76,7 @@ $ make dev-frontend
 ```
 
 #### Building
-Customize `.env` file to image and source information as desired. `npm` and the `s2i` command line tool is required.  [https://github.com/openshift/source-to-image](https://github.com/openshift/source-to-image)
+Customize `.env` file to image and source information as desired. `yarn` and the `s2i` command line tool is required.  [https://github.com/openshift/source-to-image](https://github.com/openshift/source-to-image)
 ```.env
 IMAGE_REPOSITORY=quay.io/my-org/odh-dashboard:latest
 SOURCE_REPOSITORY_URL=git@github.com:my-org/odh-dashboard.git
