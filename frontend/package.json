@@ -2,6 +2,23 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "build:analyze": "run-s build:bundle-profile build:bundle-analyze",
+    "build:bundle-profile": "webpack --config webpack.prod.js --profile --json > stats.json",
+    "build:bundle-analyze": "webpack-bundle-analyzer ./stats.json",
+    "build:clean": "rimraf dist",
+    "build:prebuild": "run-s build:clean",
+    "start": "webpack serve --hot --color --progress --config webpack.dev.js",
+    "test": "run-s test:type-check test:lint test:ci",
+    "test:ci": "export CI=true; jest --collectCoverage",
+    "test:clearCache": "jest --clearCache",
+    "test:dev": "run-s test:lint test:local",
+    "test:lint": "eslint --ext .json,.js,.ts,.jsx,.tsx ./src",
+    "test:lint-fix": "eslint --ext .json,.js,.ts,.jsx,.tsx ./src --fix",
+    "test:local": "jest --watch",
+    "test:type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "@patternfly/patternfly": "^4.42.2",
     "@patternfly/react-core": "^4.50.2",
@@ -18,45 +35,77 @@
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.7",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^26.0.14",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.12",
+    "@types/react-router-dom": "^5.1.6",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "copy-webpack-plugin": "^6.2.1",
+    "css-loader": "^5.0.0",
+    "dotenv-webpack": "^4.0.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
+    "eslint": "^7.11.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.4",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "file-loader": "^6.1.1",
+    "html-webpack-plugin": "^4.5.0",
+    "imagemin": "^7.0.0",
+    "jest": "^26.5.3",
+    "mini-css-extract-plugin": "^1.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "prettier": "^2.1.2",
+    "prop-types": "^15.6.1",
+    "raw-loader": "^4.0.2",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "react-router-dom": "^5.2.0",
+    "regenerator-runtime": "^0.13.7",
+    "rimraf": "^3.0.2",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^2.0.0",
+    "svg-url-loader": "^6.0.0",
+    "terser-webpack-plugin": "^5.0.0",
+    "ts-jest": "^26.4.1",
+    "ts-loader": "^8.0.5",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.3",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.10.3",
+    "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.2.0"
   },
   "resolutions": {
     "**/eslint": "6.8.0"
   },
-  "scripts": {
-    "start": "EXTEND_ESLINT=true react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "plugin:prettier/recommended"
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
     ],
-    "rules": {
-      "prettier/prettier": "warn"
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ]
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.2"
   },
   "proxy": "http://localhost:8080"
 }

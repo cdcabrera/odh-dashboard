@@ -6,7 +6,7 @@ import "@patternfly/patternfly/utilities/Spacing/spacing.css";
 import "@patternfly/react-core/dist/styles/base.css";
 import "./index.scss";
 
-import App from "./App";
+import App from "./app";
 import { store } from "./store";
 
 /**
@@ -20,5 +20,5 @@ ReactDOM.render(
       </Router>
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("root") as HTMLElement
 );
