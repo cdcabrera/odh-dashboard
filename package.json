@@ -12,7 +12,8 @@
     "dev": "fastify start -w -p 8080 -l debug -P app.js",
     "start": "node server.js",
     "test": "run-s test:lint",
-    "test:lint": "eslint --ext=json --ext=js ./server.js ./plugins ./routes ./utils"
+    "test:lint": "eslint --ext=json --ext=js ./server.js ./plugins ./routes ./utils",
+    "test:lint-fix": "eslint --ext=json --ext=js ./server.js ./plugins ./routes ./utils --fix"
   },
   "repository": {
     "type": "git",
