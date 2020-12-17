@@ -1,9 +1,9 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-import { Nav, NavExpandable, NavItem, NavList, PageSidebar } from "@patternfly/react-core";
+import { Nav, NavExpandable, NavItem, NavList, PageSidebar } from '@patternfly/react-core';
 
-import { navData } from "../utilities/NavData";
+import { navData } from '../utilities/NavData';
 
 function createNavItem({ id, label, href }, pathname) {
   let isActive = pathname.startsWith(href);
@@ -16,17 +16,11 @@ function createNavItem({ id, label, href }, pathname) {
 }
 
 function createNavGroup({ group, children }, pathname) {
-  const isActive = !!children.find((c) => pathname.startsWith(c.href));
+  const isActive = !!children.find(c => pathname.startsWith(c.href));
 
   return (
-    <NavExpandable
-      key={group.id}
-      title={group.title}
-      groupId={group.id}
-      isActive={isActive}
-      isExpanded={isActive}
-    >
-      {children.map((c) => createNavItem(c, pathname))}
+    <NavExpandable key={group.id} title={group.title} groupId={group.id} isActive={isActive} isExpanded={isActive}>
+      {children.map(c => createNavItem(c, pathname))}
     </NavExpandable>
   );
 }
@@ -34,7 +28,7 @@ function createNavGroup({ group, children }, pathname) {
 export const NavSidebar = ({ isNavOpen }) => {
   let routerLocation = useLocation();
 
-  const navItems = navData.map((item) => {
+  const navItems = navData.map(item => {
     if (item.group) {
       return createNavGroup(item, routerLocation.pathname);
     }

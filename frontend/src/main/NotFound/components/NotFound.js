@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Title,
@@ -8,11 +8,11 @@ import {
   EmptyStateIcon,
   EmptyStateBody,
   PageSection,
-  PageSectionVariants,
-} from "@patternfly/react-core";
-import { HomeIcon, WarningTriangleIcon } from "@patternfly/react-icons";
+  PageSectionVariants
+} from '@patternfly/react-core';
+import { HomeIcon, WarningTriangleIcon } from '@patternfly/react-icons';
 export const NotFound = () => (
-  <>
+  <React.Fragment>
     <PageSection variant={PageSectionVariants.light}>
       <EmptyState variant={EmptyStateVariant.full}>
         <EmptyStateIcon icon={WarningTriangleIcon} />
@@ -20,13 +20,11 @@ export const NotFound = () => (
         <Title headingLevel="h5" size="lg">
           Page Not Found
         </Title>
-        <EmptyStateBody>
-          Uh oh, this page appears to be missing. Move along. Nothing to see here...
-        </EmptyStateBody>
+        <EmptyStateBody>Uh oh, this page appears to be missing. Move along. Nothing to see here...</EmptyStateBody>
         <Button component="a" href="/" variant="primary">
           <HomeIcon /> Home
         </Button>
       </EmptyState>
     </PageSection>
-  </>
+  </React.Fragment>
 );

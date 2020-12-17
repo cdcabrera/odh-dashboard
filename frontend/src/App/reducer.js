@@ -1,13 +1,9 @@
-import {
-  GET_COMPONENTS_PENDING,
-  GET_COMPONENTS_FULFILLED,
-  GET_COMPONENTS_REJECTED,
-} from "./actions";
+import { GET_COMPONENTS_PENDING, GET_COMPONENTS_FULFILLED, GET_COMPONENTS_REJECTED } from './actions';
 
 const initialState = {
   components: [],
   componentsLoading: false,
-  componentsError: null,
+  componentsError: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -17,21 +13,21 @@ export const reducer = (state = initialState, action) => {
         ...state,
         components: [],
         componentsLoading: true,
-        componentsError: null,
+        componentsError: null
       };
     case GET_COMPONENTS_FULFILLED:
       return {
         ...state,
         components: action.payload.components,
         componentsLoading: false,
-        componentsError: null,
+        componentsError: null
       };
     case GET_COMPONENTS_REJECTED:
       return {
         ...state,
         components: null,
         componentsLoading: false,
-        componentsError: action.payload.error,
+        componentsError: action.payload.error
       };
     default:
       return state;

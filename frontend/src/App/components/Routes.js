@@ -1,9 +1,9 @@
-import React, { lazy, Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-const Launcher = lazy(() => import("../../main/Launcher"));
+const Launcher = lazy(() => import('../../main/Launcher'));
 // const Placehoder = lazy(() => import("../../main/Placeholder"));
-const NotFound = lazy(() => import("../../main/NotFound"));
+const NotFound = lazy(() => import('../../main/NotFound'));
 
 export const Routes = () => (
   <Suspense

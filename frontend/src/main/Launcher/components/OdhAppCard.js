@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import classNames from "classnames";
+import React, { useState } from 'react';
+import classNames from 'classnames';
 import {
   Brand,
   Card,
@@ -12,25 +12,25 @@ import {
   Dropdown,
   DropdownItem,
   KebabToggle,
-  Badge,
-} from "@patternfly/react-core";
-import { ExternalLinkAltIcon } from "@patternfly/react-icons";
+  Badge
+} from '@patternfly/react-core';
+import { ExternalLinkAltIcon } from '@patternfly/react-icons';
 
 function OdhAppCard({ odhApp }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onToggle = (value) => {
+  const onToggle = value => {
     setIsOpen(value);
   };
 
-  const onSelect = (e) => {
+  const onSelect = e => {
     setIsOpen(!isOpen);
   };
 
   const dropdownItems = [
     <DropdownItem key="docs" href={odhApp.docsLink} target="_blank" rel="noopener noreferrer">
       Documentation
-    </DropdownItem>,
+    </DropdownItem>
   ];
 
   if (odhApp.link) {
@@ -61,7 +61,7 @@ function OdhAppCard({ odhApp }) {
   }
 
   return (
-    <Card isHoverable className={classNames("odh-app-card", { "not-installed": !odhApp.enabled })}>
+    <Card isHoverable className={classNames('odh-app-card', { 'not-installed': !odhApp.enabled })}>
       <CardHeader>
         <CardHeaderMain>
           <Brand className="header-brand" src={odhApp.img} alt={odhApp.label} />
@@ -73,7 +73,7 @@ function OdhAppCard({ odhApp }) {
             isOpen={isOpen}
             isPlain
             dropdownItems={dropdownItems}
-            position={"right"}
+            position={'right'}
           />
         </CardActions>
       </CardHeader>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   PageSection,
   PageSectionVariants,
@@ -16,23 +16,23 @@ import {
   Spinner,
   Title,
   EmptyStateBody,
-  Button,
-} from "@patternfly/react-core";
-import OdhAppCard from "./OdhAppCard";
-import "./Launcher.scss";
-import { connect } from "react-redux";
-import { TimesCircleIcon, QuestionCircleIcon, WarningTriangleIcon } from "@patternfly/react-icons";
+  Button
+} from '@patternfly/react-core';
+import OdhAppCard from './OdhAppCard';
+import './Launcher.scss';
+import { connect } from 'react-redux';
+import { TimesCircleIcon, QuestionCircleIcon, WarningTriangleIcon } from '@patternfly/react-icons';
 
 const filterOptions = [
-  { value: "Show Enabled", disabled: false },
-  { value: "Show All", disabled: false },
+  { value: 'Show Enabled', disabled: false },
+  { value: 'Show All', disabled: false }
 ];
 
 const _Launcher = ({ components, componentsLoading, componentsError }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filter, setFilter] = useState("Show Enabled");
+  const [filter, setFilter] = useState('Show Enabled');
 
-  const onToolbarDropdownToggle = (value) => {
+  const onToolbarDropdownToggle = value => {
     setIsFilterOpen(!isFilterOpen);
   };
 
@@ -94,24 +94,22 @@ const _Launcher = ({ components, componentsLoading, componentsError }) => {
     let filteredComponents;
     if (!components) {
       filteredComponents = [];
-    } else if (filter === "Show All") {
-      filteredComponents = components.map((c) => <OdhAppCard key={c.key} odhApp={c} />);
+    } else if (filter === 'Show All') {
+      filteredComponents = components.map(c => <OdhAppCard key={c.key} odhApp={c} />);
     } else {
-      filteredComponents = components
-        .filter((a) => a && a.enabled)
-        .map((c) => <OdhAppCard key={c.key} odhApp={c} />);
+      filteredComponents = components.filter(a => a && a.enabled).map(c => <OdhAppCard key={c.key} odhApp={c} />);
     }
 
     if (!filteredComponents || filteredComponents.length === 0) {
       let actions = null;
-      if (filter !== "Show All" && components && components.length > 0) {
+      if (filter !== 'Show All' && components && components.length > 0) {
         actions = (
-          <>
+          <React.Fragment>
             <EmptyStateBody>Try removing all filters</EmptyStateBody>
-            <Button variant="primary" onClick={() => setFilter("Show All")}>
+            <Button variant="primary" onClick={() => setFilter('Show All')}>
               <TimesCircleIcon /> Clear Filters
             </Button>
-          </>
+          </React.Fragment>
         );
       }
 
@@ -137,23 +135,21 @@ const _Launcher = ({ components, componentsLoading, componentsError }) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <PageSection className="launcher-heading" variant={PageSectionVariants.light}>
         <TextContent className="launcher-text">
           <Text component="h1">Applications</Text>
           <Text component="h3">Welcome to Open Data Hub.</Text>
           <Text component="p">
-            Open Data Hub is an open source project based on Kubeflow that provides open source AI
-            tools for running large and distributed AI workloads on OpenShift Container Platform.
-            Currently, the Open Data Hub project provides open source tools for data storage,
-            distributed AI and Machine Learning (ML) workflows, Jupyter Notebook development
-            environment and monitoring.
+            Open Data Hub is an open source project based on Kubeflow that provides open source AI tools for running
+            large and distributed AI workloads on OpenShift Container Platform. Currently, the Open Data Hub project
+            provides open source tools for data storage, distributed AI and Machine Learning (ML) workflows, Jupyter
+            Notebook development environment and monitoring.
           </Text>
           <Text component="p">
-            Open Data Hub includes several open source components, which can be individially
-            enabled. Several have their own UIs which you can launch from this page. Click on an
-            Open Data Hub component application to launch the UI or take you to the documentation to
-            find out more.
+            Open Data Hub includes several open source components, which can be individially enabled. Several have their
+            own UIs which you can launch from this page. Click on an Open Data Hub component application to launch the
+            UI or take you to the documentation to find out more.
           </Text>
         </TextContent>
         <Toolbar id="toolbar-group-types" clearAllFilters={() => {}}>
@@ -163,15 +159,15 @@ const _Launcher = ({ components, componentsLoading, componentsError }) => {
         </Toolbar>
       </PageSection>
       {buildComponentList()}
-    </>
+    </React.Fragment>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state.appReducer;
 };
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 
 export const Launcher = connect(mapStateToProps, mapDispatchToProps)(_Launcher);
 export default Launcher;

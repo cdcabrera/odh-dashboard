@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Title,
@@ -8,11 +8,11 @@ import {
   EmptyStateIcon,
   EmptyStateBody,
   PageSection,
-  PageSectionVariants,
-} from "@patternfly/react-core";
-import { HomeIcon, WarningTriangleIcon } from "@patternfly/react-icons";
+  PageSectionVariants
+} from '@patternfly/react-core';
+import { HomeIcon, WarningTriangleIcon } from '@patternfly/react-icons';
 export const Placeholder = () => (
-  <>
+  <React.Fragment>
     <PageSection variant={PageSectionVariants.light}>
       <EmptyState variant={EmptyStateVariant.full}>
         <EmptyStateIcon icon={WarningTriangleIcon} />
@@ -26,5 +26,5 @@ export const Placeholder = () => (
         </Button>
       </EmptyState>
     </PageSection>
-  </>
+  </React.Fragment>
 );

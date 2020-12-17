@@ -1,7 +1,7 @@
-import React from "react";
-import { Brand, PageHeader } from "@patternfly/react-core";
+import React from 'react';
+import { Brand, PageHeader } from '@patternfly/react-core';
 
-import odhLogo from "../../images/odh-logo.svg";
+import odhLogo from '../../images/odh-logo.svg';
 
 // export const Header = ({ isNavOpen, onNavToggle }) => {
 export const Header = () => {

@@ -11,8 +11,8 @@
     "test:ci": "export CI=true; react-scripts test --env=jsdom --roots=./src --coverage",
     "test:clearCache": "react-scripts test --clearCache",
     "test:dev": "run-s test:lint test:local",
-    "test:lint": "eslint --ext .json,.js,.jsx ./src",
-    "test:lint-fix": "eslint --ext .json,.js,.jsx ./src --fix",
+    "test:lint": "eslint --ext .json,.js,.jsx,.tsx ./src",
+    "test:lint-fix": "eslint --ext .json,.js,.jsx,.tsx ./src --fix",
     "test:local": "react-scripts test --env=jsdom --roots=./src"
   },
   "dependencies": {

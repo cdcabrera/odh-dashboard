@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { Page } from "@patternfly/react-core";
+import { Page } from '@patternfly/react-core';
 // import { Header, NavSidebar, Routes } from "./";
-import { Header, Routes } from "./";
-import { getComponents } from "../actions";
+import { Header, Routes } from './';
+import { getComponents } from '../actions';
 
-import "./App.scss";
+import './App.scss';
 
 const _App = withRouter(({ getComponents }) => {
   const [isNavOpen, setIsNavOpen] = useState(true);
@@ -33,14 +33,14 @@ const _App = withRouter(({ getComponents }) => {
   );
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return state.appReducer;
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getComponents: () => {
     dispatch(getComponents());
-  },
+  }
 });
 
 export const App = connect(mapStateToProps, mapDispatchToProps)(_App);
