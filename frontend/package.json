@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "run-s build:clean build:prod",
+    "build": "run-s build:prod",
     "build:analyze": "run-s build build:bundle-profile build:bundle-analyze",
     "build:bundle-profile": "webpack --config webpack.prod.js --profile --json > build/bundle.stats.json",
     "build:bundle-analyze": "webpack-bundle-analyzer ./build/bundle.stats.json",
-    "build:clean": "rimraf build",
+    "build:clean": "rimraf ./build",
     "build:prod": "webpack --config webpack.prod.js",
     "start": "webpack serve --hot --color --progress --config webpack.dev.js",
     "test": "run-s test:type-check test:lint test:ci",

@@ -1,14 +1,17 @@
 const path = require('path');
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
+
 const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || "9000";
+const SRC_DIR = process.env.SRC_DIR;
+const DIST_DIR = process.env.DIST_DIR;
 
 module.exports = merge(common('development'), {
   mode: "development",
   devtool: "eval-source-map",
   devServer: {
-    contentBase: "./dist",
+    contentBase: DIST_DIR,
     host: HOST,
     port: PORT,
     compress: true,
@@ -23,7 +26,7 @@ module.exports = merge(common('development'), {
       {
         test: /\.css$/,
         include: [
-          path.resolve(__dirname, 'src'),
+          SRC_DIR,
           path.resolve(__dirname, 'node_modules/patternfly'),
           path.resolve(__dirname, 'node_modules/@patternfly/patternfly'),
           path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css'),

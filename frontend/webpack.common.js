@@ -1,14 +1,32 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-const BG_IMAGES_DIRNAME = 'images';
-const ASSET_PATH = process.env.ASSET_PATH || '/';
-module.exports = env => {
+const {
+  compilerOptions: tsConfigCompilerOptions = { outDir: './dist', baseUrl: './src' }
+} = require(path.resolve(__dirname, './tsconfig.json'));
 
+const IMAGES_DIRNAME = process.env.IMAGES_DIRNAME || 'images';
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
+const SRC_DIR = path.resolve(__dirname, process.env.SRC_DIR || tsConfigCompilerOptions.baseUrl);
+const DIST_DIR = path.resolve(__dirname, process.env.DIST_DIR || tsConfigCompilerOptions.outDir);
+
+process.env.SRC_DIR = SRC_DIR;
+process.env.DIST_DIR = DIST_DIR;
+
+console.info(`
+Prepping files...
+
+SRC DIR: ${SRC_DIR}
+OUTPUT DIR: ${DIST_DIR}
+PUBLIC PATH: ${PUBLIC_PATH}
+`);
+
+module.exports = env => {
   return {
     entry: {
-      app: path.resolve(__dirname, 'src', 'index.tsx')
+      app: path.join(SRC_DIR, 'index.tsx')
     },
     module: {
       rules: [
@@ -38,7 +56,7 @@ module.exports = env => {
           use: {
             loader: 'file-loader',
             options: {
-              // Limit at 50k. larger files emited into separate files
+              // Limit at 50k. larger files emitted into separate files
               limit: 5000,
               outputPath: 'fonts',
               name: '[name].[ext]',
@@ -63,7 +81,7 @@ module.exports = env => {
           test: /\.svg$/,
           // only process SVG modules with this loader if they live under a 'bgimages' directory
           // this is primarily useful when applying a CSS background using an SVG
-          include: input => input.indexOf(BG_IMAGES_DIRNAME) > -1,
+          include: input => input.indexOf(IMAGES_DIRNAME) > -1,
           use: {
             loader: 'svg-url-loader',
             options: {
@@ -76,7 +94,7 @@ module.exports = env => {
           // only process SVG modules with this loader when they don't live under a 'bgimages',
           // 'fonts', or 'pficon' directory, those are handled with other loaders
           include: input => (
-            (input.indexOf(BG_IMAGES_DIRNAME) === -1) &&
+            (input.indexOf(IMAGES_DIRNAME) === -1) &&
             (input.indexOf('fonts') === -1) &&
             (input.indexOf('background-filter') === -1) &&
             (input.indexOf('pficon') === -1)
@@ -89,7 +107,7 @@ module.exports = env => {
         {
           test: /\.(jpg|jpeg|png|gif)$/i,
           include: [
-            path.resolve(__dirname, 'src'),
+            SRC_DIR,
             path.resolve(__dirname, 'node_modules/patternfly'),
             path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/images'),
             path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css/assets/images'),
@@ -124,16 +142,26 @@ module.exports = env => {
     },
     output: {
       filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'build'),
-      publicPath: ASSET_PATH
+      path: path.resolve(__dirname, DIST_DIR),
+      publicPath: PUBLIC_PATH
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'src', 'index.html')
+        template: path.join(SRC_DIR, 'index.html')
       }),
       new Dotenv({
         systemvars: true,
         silent: true
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: path.join(SRC_DIR, 'locales'), to: path.join(DIST_DIR, 'locales'), noErrorOnMissing: true },
+          { from: path.join(SRC_DIR, 'favicons'), to: path.join(DIST_DIR, 'favicons'), noErrorOnMissing: true },
+          { from: path.join(SRC_DIR, 'images'), to: path.join(DIST_DIR, 'images'), noErrorOnMissing: true },
+          { from: path.join(SRC_DIR, 'favicon.ico'), to: path.join(DIST_DIR), noErrorOnMissing: true },
+          { from: path.join(SRC_DIR, 'manifest.json'), to: path.join(DIST_DIR), noErrorOnMissing: true },
+          { from: path.join(SRC_DIR, 'robots.txt'), to: path.join(DIST_DIR), noErrorOnMissing: true }
+        ]
       })
     ],
     resolve: {
