@@ -3,15 +3,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+
+const RELATIVE_DIRNAME = path.resolve(__dirname, '..');
 const {
   compilerOptions: tsConfigCompilerOptions = { outDir: './dist', baseUrl: './src' }
-} = require(path.resolve(__dirname, './tsconfig.json'));
+} = require(path.resolve(RELATIVE_DIRNAME, './tsconfig.json'));
 
 const IMAGES_DIRNAME = process.env.IMAGES_DIRNAME || 'images';
 const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
-const SRC_DIR = path.resolve(__dirname, process.env.SRC_DIR || tsConfigCompilerOptions.baseUrl);
-const DIST_DIR = path.resolve(__dirname, process.env.DIST_DIR || tsConfigCompilerOptions.outDir);
+const SRC_DIR = path.resolve(RELATIVE_DIRNAME, process.env.SRC_DIR || tsConfigCompilerOptions.baseUrl);
+const DIST_DIR = path.resolve(RELATIVE_DIRNAME, process.env.DIST_DIR || tsConfigCompilerOptions.outDir);
 
+process.env.RELATIVE_DIRNAME = RELATIVE_DIRNAME;
 process.env.SRC_DIR = SRC_DIR;
 process.env.DIST_DIR = DIST_DIR;
 
@@ -47,11 +50,11 @@ module.exports = env => {
           // only process modules with this loader
           // if they live under a 'fonts' or 'pficon' directory
           include: [
-            path.resolve(__dirname, 'node_modules/patternfly/dist/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/pficon'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/pficon')
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/patternfly/dist/fonts'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-core/dist/styles/assets/fonts'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-core/dist/styles/assets/pficon'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/patternfly/assets/fonts'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/patternfly/assets/pficon')
           ],
           use: {
             loader: 'file-loader',
@@ -108,13 +111,13 @@ module.exports = env => {
           test: /\.(jpg|jpeg|png|gif)$/i,
           include: [
             SRC_DIR,
-            path.resolve(__dirname, 'node_modules/patternfly'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images')
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/patternfly'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/patternfly/assets/images'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-styles/css/assets/images'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-core/dist/styles/assets/images'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images'),
+            path.resolve(RELATIVE_DIRNAME, 'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images')
           ],
           use: [
             {
@@ -142,7 +145,7 @@ module.exports = env => {
     },
     output: {
       filename: '[name].bundle.js',
-      path: path.resolve(__dirname, DIST_DIR),
+      path: DIST_DIR,
       publicPath: PUBLIC_PATH
     },
     plugins: [
@@ -168,7 +171,7 @@ module.exports = env => {
       extensions: ['.js', '.ts', '.tsx', '.jsx'],
       plugins: [
         new TsconfigPathsPlugin({
-          configFile: path.resolve(__dirname, './tsconfig.json')
+          configFile: path.resolve(RELATIVE_DIRNAME, './tsconfig.json')
         })
       ],
       symlinks: false,
