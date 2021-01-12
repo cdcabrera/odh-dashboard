@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const { setupWebpackDotenvFile } = require('./dotenv');
 
 const RELATIVE_DIRNAME = path.resolve(__dirname, '..');
 const { compilerOptions: tsConfigCompilerOptions = { outDir: './dist', baseUrl: './src' } } = require(path.resolve(
@@ -10,20 +10,33 @@ const { compilerOptions: tsConfigCompilerOptions = { outDir: './dist', baseUrl: 
   './tsconfig.json'
 ));
 
-const IMAGES_DIRNAME = process.env.IMAGES_DIRNAME || 'images';
-const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
-const SRC_DIR = path.resolve(RELATIVE_DIRNAME, process.env.SRC_DIR || tsConfigCompilerOptions.baseUrl);
-const DIST_DIR = path.resolve(RELATIVE_DIRNAME, process.env.DIST_DIR || tsConfigCompilerOptions.outDir);
+const IS_PROJECT_ROOT_DIR = process.env.OSEED_IS_PROJECT_ROOT_DIR !== 'false';
+const IMAGES_DIRNAME = process.env.OSEED_IMAGES_DIRNAME || 'images';
+const PUBLIC_PATH = process.env.OSEED_PUBLIC_PATH || '/';
+const SRC_DIR = path.resolve(RELATIVE_DIRNAME, process.env.OSEED_SRC_DIR || tsConfigCompilerOptions.baseUrl);
+const DIST_DIR = path.resolve(RELATIVE_DIRNAME, process.env.OSEED_DIST_DIR || tsConfigCompilerOptions.outDir);
 
-process.env.RELATIVE_DIRNAME = RELATIVE_DIRNAME;
-process.env.SRC_DIR = SRC_DIR;
-process.env.DIST_DIR = DIST_DIR;
+process.env._OSEED_RELATIVE_DIRNAME = RELATIVE_DIRNAME;
+process.env._OSEED_IS_PROJECT_ROOT_DIR = IS_PROJECT_ROOT_DIR;
+process.env._OSEED_SRC_DIR = SRC_DIR;
+process.env._OSEED_DIST_DIR = DIST_DIR;
 
-if (process.env.OUTPUT_ONLY !== 'true') {
+if (process.env.OSEED_OUTPUT_ONLY !== 'true') {
   console.info(
     `\nPrepping files...\n  SRC DIR: ${SRC_DIR}\n  OUTPUT DIR: ${DIST_DIR}\n  PUBLIC PATH: ${PUBLIC_PATH}\n`
   );
 }
+
+const dotenvSettings = [];
+
+if (!IS_PROJECT_ROOT_DIR) {
+  const parentDirectory = path.resolve(RELATIVE_DIRNAME, '..');
+  dotenvSettings.push(setupWebpackDotenvFile(path.resolve(parentDirectory, '.env.local')));
+  dotenvSettings.push(setupWebpackDotenvFile(path.resolve(parentDirectory, '.env')));
+}
+
+dotenvSettings.push(setupWebpackDotenvFile(path.resolve(RELATIVE_DIRNAME, '.env.local')));
+dotenvSettings.push(setupWebpackDotenvFile(path.resolve(RELATIVE_DIRNAME, '.env')));
 
 module.exports = env => {
   return {
@@ -156,15 +169,7 @@ module.exports = env => {
       publicPath: PUBLIC_PATH
     },
     plugins: [
-      new Dotenv({
-        path: path.resolve(RELATIVE_DIRNAME, '.env.local'),
-        systemvars: true,
-        silent: true
-      }),
-      new Dotenv({
-        systemvars: true,
-        silent: true
-      }),
+      ...dotenvSettings,
       new HtmlWebpackPlugin({
         template: path.join(SRC_DIR, 'index.html')
       }),
